@@ -6,12 +6,14 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
-from sklearn.model_selection import train_test_split
+from sklearn import svm
 
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+
 import hvplot.pandas
-%matplotlib inline
+
 
 from pathlib import Path
 import datetime as dt
@@ -32,46 +34,16 @@ from utils.eval_functions import buy_or_sell_trade_percent
 from utils.sentiment_functions import concat_sentiment
 from sentiment_analysis.sentiment_functions import get_sentiments, getTwitterData
 
-# %%
-# Constructing crypto api call
 
-'''today = dt.date.today()
-two_years_ago = (today - dt.timedelta(days=730))
-yesterday = (today - dt.timedelta(days=1)).isoformat()
-start = two_years_ago
-end= yesterday
-symbols = ['BTCUSD']
-timeframe='1Day'
-limit = 5000
-stock_df = pd.DataFrame()
-
-# Iterating through tickers to isolate and concat close data
-for symbol in symbols:     
-    symbol_df = get_crypto_bars(symbol=symbol, timeframe=timeframe, start=start, end=end, limit=limit)
-    stock_df = pd.concat([stock_df, symbol_df], axis=1)
-    
-stock_df'''
-
-
-
-# %%
-# Construct stock data api call
-def getStockPredictions(symbol, numDays):
+def getStockNewsSentiment(symbol, numDays, limit):
+    # Get news for ticker
     today = dt.date.today()
     two_years_ago = (today - dt.timedelta(days=numDays))
     yesterday = (today - dt.timedelta(days=1)).isoformat()
     start = two_years_ago
     end= yesterday
     symbol = symbol
-    timeframe='1Day'
-    limit = 5000
-    stock_df = pd.DataFrame()
-
-    stock_df = get_historical_dataframe(symbol=symbol, start=start, end=end, timeframe=timeframe)
-    stock_df
-
-    # %%
-    # Get news for ticker
+    limit = limit
     news_df = get_news(symbol, start, end, limit)
 
     # %%
@@ -98,8 +70,10 @@ def getStockPredictions(symbol, numDays):
 
     # %%
     sentiment_df_resampled.fillna(0, inplace=True)
+    return sentiment_df_resampled
 
-    # %%
+    
+def getPredictions(stock_df):
     close_df = pd.DataFrame(stock_df["close"])
     close_df.index = close_df.index.normalize()
 
@@ -184,16 +158,16 @@ def getStockPredictions(symbol, numDays):
     
 
     # %%
-    
+    train_num = int(numDays * 0.75)
+    test_num = numDays-train_num
+    # %%
+    X_train = X[:train_num]
+    X_test = X[-test_num:]
+
 
     # %%
-    X_train = X[:75]
-    X_test = X[75:]
-
-
-    # %%
-    y_train = y_signal[:75]
-    y_test = y_signal[75:]
+    y_train = y_signal[:train_num]
+    y_test = y_signal[-test_num:]
 
     # %%
     scaler = StandardScaler()
@@ -204,6 +178,11 @@ def getStockPredictions(symbol, numDays):
     # %%
     X_train_scaled = scaler.transform(X_train)
     X_test_scaled = scaler.transform(X_test)
+    
+    svm_model = svm.SVC()
+    svm_model = svm_model.fit(X_train_scaled, y_train)
+    svm_predictions = svm_model.predict(X_train_scaled)
+    
 
     # %%
     shallow_preds = pd.DataFrame(shallow_neural(X_train_scaled, y_train, X_test_scaled, y_test))
@@ -211,12 +190,13 @@ def getStockPredictions(symbol, numDays):
     # %%
     deep_preds = pd.DataFrame(deep_neural(X_train_scaled, y_train, X_test_scaled, y_test))
 
-    predictions_df = pd.concat([shallow_preds, deep_preds], axis=1)
+    predictions_df = pd.concat([shallow_preds, deep_preds], axis=1, columns = ['deep_neural', 'svm', 'shallow_neural', 'gbd'])
+    
 
     return predictions_df
 
     # %%
-    '''y_shallow = pd.DataFrame()
+def backtest(combined_preditions_df): 
     y_shallow['signal'] = shallow_preds
     y_shallow['signal'][0] = 0.0
     y_shallow['signal'] = y_shallow['signal'].apply(lambda x: -1 if x <= -0.25 else x)
@@ -332,7 +312,7 @@ def getStockPredictions(symbol, numDays):
     display(cum_return_plot * shallow_plot)
     display(pct_change.std(), y_deep['Portfolio Daily Returns'].std())
     display(y_deep['Portfolio Total'].hvplot(yformatter='%.2f'))
-    display(y_deep['Portfolio Cash'].hvplot(yformatter='%.2f'))'''
+    display(y_deep['Portfolio Cash'].hvplot(yformatter='%.2f'))
 
 
 # %%

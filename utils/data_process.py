@@ -4,7 +4,7 @@ from pathlib import Path
 
 # returns a dataframe with rolling average columns. moving average numbers were chosen from reported amounts of the most common ones used by other traders. 5, 10, 20, 50, 100, and 200, plus fibonacci numbers in the same range.
 def return_rolling_averages(dataframe):
-    windows = [2, 3, 5, 8, 10, 13, 20, 21, 34, 50, 55, 89, 100, 144, 200]
+    windows = [2, 3, 5, 8, 10, 13, 20, 21]
     for w in windows:
         dataframe[w]=dataframe["close"].rolling(w).mean()
 
