@@ -10,17 +10,22 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 from matplotlib import pyplot
 
-def shallow_neural(X_train_scaled, y_train, X_test_scaled, y_test, n_epochs=50):
+def shallow_neural(X_train_scaled, y_train, X_test_scaled, y_test, n_epochs=75):
     number_output_neurons = 1
     number_input_features=X_train_scaled.shape[1]
-    hidden_nodes_layer1= (number_input_features + number_output_neurons)//2
-    hidden_nodes_layer2= (hidden_nodes_layer1 + number_output_neurons)//2
+    hidden_nodes_layer1= (number_input_features + number_output_neurons)
+    hidden_nodes_layer2= (hidden_nodes_layer1 + number_output_neurons)/1.5
+    
     
     # shallow model
 
     model=Sequential()
     model.add(Dense(units=hidden_nodes_layer1, input_dim=number_input_features, activation = "relu"))
     model.add(Dense(units=hidden_nodes_layer2, activation = "relu"))
+    model.add(Dense(units=hidden_nodes_layer2/2, activation = "relu"))
+    model.add(Dense(units=hidden_nodes_layer2/4, activation = "relu"))
+    model.add(Dense(units=hidden_nodes_layer2/8, activation = "relu"))
+    model.add(Dense(units=hidden_nodes_layer2/16, activation = "relu"))
     model.add(Dense(units=1, activation = "tanh"))
     model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
     
