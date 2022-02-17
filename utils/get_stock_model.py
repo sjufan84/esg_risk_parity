@@ -391,9 +391,6 @@ def getStockModel(ticker, numDays, initial_capital):
     shallow_plot = (((combined_preds['Portfolio Cumulative Returns'] - 1))*100).hvplot(
         ylabel='Cumulative Returns (%)', label='Model Returns', legend=True, yformatter='%.2f')
     combined_plot = cum_return_plot * shallow_plot
-    print(f'Actual returns standard deviation is str(pct_change.std())')
-    print(
-        f'Portfolio standard deviation is str(combined_preds["Portfolio Daily Returns"].std())')
     portfolio_total = combined_preds['Portfolio Total'].hvplot(
         yformatter='%.2f', title=f'{ticker}')
     portfolio_cash = combined_preds['Portfolio Cash'].hvplot(
