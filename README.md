@@ -37,3 +37,5 @@ Plotly -- another tool to generate plots
 ## License
 
 Licensed under the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt)  Copyright 2021 Dave Thomas.
+ 
+### For questions or more information, please e-mail me at [sjufan84@gmail.com](mailto:sjufan84@gmail.com)
