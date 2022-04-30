@@ -14,6 +14,7 @@ Plotly -- another tool to generate plots
 
 * Voila -- install via Pypi --  
  `pip install voila` in the command line  
+ **For more information on Voila, visit their documentation site at https://voila.readthedocs.io/en/latest/index.html**
 
  * alpaca trade api -- install via Pypi --  
  `pip install alpaca-trade-api` in the command line  
