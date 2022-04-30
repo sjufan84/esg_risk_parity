@@ -4,10 +4,11 @@ Constructing a portfolio of crypto and stock assets utlizing ESG scores as well 
 
 ## Technologies
 
-In this project we are utilizing Python 3, Voila, Alpaca Trade API, Pandas, Holoviews, Numpy, Jupyter Lab and Plotly
-Voila -- allows you to convert a Jupyter Notebook into an interactive dashboard that allows you to share your work with others. It is secure and customizable, giving you control over what your readers experience.
-Alpaca Trade API -- allows for the simple access of historical stock and crypto data
-Holoviews -- a visualization library that includes hvplot and other tools to create simple and customizable charts
+In this project we are utilizing Python 3, Voila, Alpaca Trade API, Pandas, Holoviews, Numpy, Jupyter Lab and Plotly  
+
+Voila -- allows you to convert a Jupyter Notebook into an interactive dashboard that allows you to share your work with others. It is secure and customizable, giving you control over what your readers experience.  
+Alpaca Trade API -- allows for the simple access of historical stock and crypto data  
+Holoviews -- a visualization library that includes hvplot and other tools to create simple and customizable charts  
 Plotly -- another tool to generate plots
 
 ## Installation Guide
@@ -28,10 +29,10 @@ Plotly -- another tool to generate plots
 ## Usage
 
   After ensuring all necessary libraries are installed, use Voila to visualize the underlying 'esg_parity_voila.ipynb'.  This can be done one of 2 ways:
-  1) Directly from the command line -- voila <path-to-notebook>
-  2) Using Jupyter Lab Extension, start jupyter lab server and then open a browser window with <url-of-my-server>/voila
+  1) Directly from the command line -- `voila <path-to-notebook>`
+  2) Using Jupyter Lab Extension, start jupyter lab server and then open a browser window with `<url-of-my-server>/voila`
   
-  **Please note this will take some time depending on your system's specs and internet connection due to the API calls and the multiple ML models that are being run**
+  **Please note this will take some time depending on your system's specs and internet connection due to the API calls and the multiple ML models that are being run --  for digging in to the code behind the API calls and Machine learning models used, navigate to the utils folder containing the various scripts used**
 
 
 ## License
