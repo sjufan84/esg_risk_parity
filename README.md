@@ -1,6 +1,10 @@
 # Machine Learning and Heirarchical Risk Parity ESG Portfolio Construction
 
-Constructing a portfolio of crypto and stock assets utlizing ESG scores as well as machine learning models to predict buy / sell signals after establishing asset weights using hierarchical risk parity models.
+Constructing a portfolio of crypto and stock assets utlizing ESG scores as well as machine learning models to predict buy / sell signals after establishing asset weights using hierarchical risk parity models.  
+
+## Disclaimer  
+
+This project should not be in any way considered financial or investing advice.  It is for demonstration purposes only!  Please consult a certified financial planner or do your own research before making any investment decisions.
 
 ## Technologies
 
