@@ -2,6 +2,7 @@
 #imports
 import pandas as pd
 import numpy as np
+from alpaca.data.timeframe import TimeFrame
 
 
 # Multiple types of models from sklearn
@@ -27,7 +28,7 @@ import datetime as dt
 
 # %%
 # import functions
-from utils.AlpacaFunctions import get_historical_dataframe, get_crypto_bars, get_news
+from utils.AlpacaFunctions import get_historical_dataframe, get_crypto_bars
 from utils.data_process import return_rolling_averages
 from utils.data_process import return_crossovers
 from utils.data_process import return_weighted_crossovers
@@ -35,14 +36,14 @@ from utils.data_process import return_weighted_crossovers
 def getCryptoModel(ticker, numDays, initial_capital):
         # %%
         # Constructing crypto api call
-        numDays = numDays
-        today = dt.date.today()
-        start = (today - dt.timedelta(days=numDays))
-        yesterday = (today - dt.timedelta(days=1)).isoformat()
-        end= yesterday
-        symbol = ticker
-        timeframe='1Day'
+        numDay = numDays
+        timeframe = TimeFrame.Day
+        today = dt.datetime.today()
+        start = dt.datetime.today() - dt.timedelta(days=numDays)
+        yesterday = dt.datetime.today() - dt.timedelta(days=1)
+        end = yesterday
         limit = 5000
+        symbol = ticker
         stock_df = pd.DataFrame()
 
         # Iterating through tickers to isolate and concat close data
@@ -109,12 +110,12 @@ def getCryptoModel(ticker, numDays, initial_capital):
 
         # %%
         pct_change_df.rename(columns = {'close' : 'pct'}, inplace=True)
-        stock_df.drop(columns = 'exchange', inplace=True)
 
         # %%
         # Concatenating dataframe with our cumulative signals
         signals_input_df = pd.DataFrame()
         signals_input_df = pd.concat([stock_df, pct_change_df, cross_df, pct_change_df, cross_signals, cross_signals_weighted, cross_weighted_df, finta_df], axis=1).dropna()
+        signals_input_df.columns = signals_input_df.columns.astype('str')
 
         # %%
         #Assigning our signals dataframe to X for train/test split

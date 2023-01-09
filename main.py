@@ -1,4 +1,4 @@
-# %%
+
 #Import modules
 from alpaca_trade_api import TimeFrame
 import pandas as pd
@@ -11,18 +11,16 @@ import os
 from pathlib import Path
 import datetime as dt
 
-import hvplot.pandas
 import matplotlib.pyplot as plt
-import plotly as pty
 import plotly.express as px
 import holoviews as hv
-hv.notebook_extension('bokeh')
 import matplotlib.pyplot as plt
-import voila
+import streamlit as st
+
 
 
 from utils.MCForecastTools import MCSimulation
-from utils.AlpacaFunctions import get_historical_dataframe, get_crypto_bars, get_news
+from utils.AlpacaFunctions import get_historical_dataframe, get_crypto_bars
 from utils.get_crypto_model import getCryptoModel
 from utils.get_stock_model import getStockModel
 
@@ -38,7 +36,12 @@ warnings.filterwarnings('ignore')
 # Constructing crypto api call
 # For the purposes of demonstration through Voila we are removing the input options
 numDays = 1095
-#crypto_input = input(f'Would you like to add any Crypto to your portfolio? (y/n)?')
+# Create a yes/no input to determine if user would like to add crypto to their portfolio
+crypto_input = st.checkbox('Would you like to add crypto to your portfolio?')
+if crypto_input:
+    symbol = 
+
+
 
 #if crypto_input == 'y':
 #   symbol = input('List which coin you would like to add, i.e. BTCUSD, ETHUSD')

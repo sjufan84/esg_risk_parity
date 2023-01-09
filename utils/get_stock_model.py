@@ -27,7 +27,8 @@ import datetime as dt
 
 # %%
 # import functions
-from utils.AlpacaFunctions import get_historical_dataframe, get_crypto_bars, get_news
+from alpaca.data.timeframe import TimeFrame
+from utils.AlpacaFunctions import get_historical_dataframe, get_crypto_bars
 from utils.data_process import return_rolling_averages
 from utils.data_process import return_crossovers
 from utils.data_process import return_weighted_crossovers
@@ -35,18 +36,20 @@ from utils.data_process import return_weighted_crossovers
 
 def getStockModel(ticker, numDays, initial_capital):
     
-    numDays = numDays
-    today = dt.date.today()
-    two_years_ago = (today - dt.timedelta(days=numDays))
-    yesterday = (today - dt.timedelta(days=1)).isoformat()
-    start = two_years_ago
-    end= yesterday
+    numDay = numDays
+    timeframe = TimeFrame.Day
+    today = dt.datetime.today()
+    start = dt.datetime.today() - dt.timedelta(days=numDays)
+    yesterday = dt.datetime.today() - dt.timedelta(days=1)
+    end = yesterday
+    limit = 5000
     symbol = ticker
-    timeframe='1Day'
+    timeframe=TimeFrame.Day
     limit = 5000
     stock_df = pd.DataFrame()
 
-    stock_df = get_historical_dataframe(symbol=symbol, start=start, end=end, timeframe=timeframe)
+    stock_df = get_historical_dataframe(symbol=symbol, start=start, end=end, timeframe=timeframe, limit=limit)
+    stock_df.index = stock_df.index.droplevel(level=0)
 
         # Iterating through tickers to isolate and concat close data
         
@@ -117,6 +120,7 @@ def getStockModel(ticker, numDays, initial_capital):
     signals_input_df = pd.DataFrame()
     signals_input_df = pd.concat([stock_df, pct_change_df, cross_df, pct_change_df,
                                   cross_signals, cross_signals_weighted, cross_weighted_df, finta_df], axis=1).dropna()
+    signals_input_df.columns = signals_input_df.columns.astype('str')
 
     # %%
     #Assigning our signals dataframe to X for train/test split
