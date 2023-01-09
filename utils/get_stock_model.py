@@ -125,6 +125,8 @@ def getStockModel(ticker, numDays, initial_capital):
     # %%
     #Assigning our signals dataframe to X for train/test split
     X = signals_input_df.dropna()
+    
+    ### @@ TODO use pca to shrink data for models to speed up @@
 
     # %%
     # Shifting our close df and comparing to original close df, we generate signals for whether or not the stock
