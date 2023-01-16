@@ -36,7 +36,7 @@ from utils.data_process import return_weighted_crossovers
 
 def getStockModel(ticker, numDays, initial_capital):
     
-    numDay = numDays
+    numDays = numDays
     timeframe = TimeFrame.Day
     today = dt.datetime.today()
     start = dt.datetime.today() - dt.timedelta(days=numDays)
